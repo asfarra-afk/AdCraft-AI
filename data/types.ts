@@ -1,114 +1,101 @@
-export type InputType = 'text' | 'document';
-
-export type ToneType = 
-  | 'high_converting' 
-  | 'emotional' 
-  | 'storytelling' 
-  | 'controversial' 
-  | 'urgency' 
-  | 'humorous' 
-  | 'value_first';
-
-export type LanguageType = 'auto' | 'bangla' | 'english' | 'banglish';
-
-export type ThemeType = 'midnight' | 'emerald' | 'slate' | 'light';
-
-export interface AdConcept {
-  id: string;
-  timestamp: number;
-  angleName: string;
-
-  // 1. AD CONCEPT (অ্যাড কনসেপ্ট)
-  adConcept: {
-    idea: string;
-    customerAvatar: string;
-    angles: string;
-    uniquePoint: string;
-  };
-
-  // 2. AD SCRIPT (অ্যাড স্ক্রিপ্ট)
-  adScript: {
-    hook: string;
-    pinpointPain: string;
-    solution: string;
-    callToAction: string;
-    uniqueDirection: string;
-  };
-
-  // 3. AD CAPTION (সোশ্যাল মিডিয়া ক্যাপশন)
-  adCaption: {
-    title: string;
-    pinpoint: string;
-    brandwiseSolution: string;
-    uniqueOffer: string;
-  };
-
-  // 4. IMAGE AD COPY & PROMPT (ছবির ব্যানার টেক্সট ও এআই প্রম্পট)
-  imageAdCopy: {
-    headline: string;
-    subline: string;
-    imgContent: string;
-    imgPrompt: string;
-  };
-
-  // Backwards compatibility / summary fields
-  idea: string;
-  hook: string;
-  painPoint: string;
-  solution: string;
-  cta: string;
-  fullScript: string;
-  caption: string;
-
-  metadata: {
-    targetAudienceSummary: string;
-    estimatedDuration: string;
-    languageDetected: string;
-    toneUsed: string;
-    recommendedVisuals: string[];
-  };
-}
-
-export interface AdGenerationParams {
-  inputType: InputType;
-  productName?: string;
-  productDescription?: string;
-  targetAudience?: string;
-  problemSolved?: string;
-  offerOrPrice?: string;
-  tone: ToneType;
-  language: LanguageType;
-  angleStyle?: string;
-  fileData?: {
-    name: string;
-    mimeType: string;
-    content: string; // Base64 data or plain text
-  };
-  customInstructions?: string;
-  variationsCount?: number;
-}
-
-export interface PresetTemplate {
-  id: string;
-  title: string;
-  titleBn: string;
-  category: string;
-  icon: string;
+export interface ProductSummary {
   productName: string;
-  productDescription: string;
+  category?: string;
   targetAudience: string;
-  problemSolved: string;
-  offerOrPrice: string;
-  tone: ToneType;
+  coreProblemSolved: string;
+  keyBenefits: string[];
 }
 
-export interface SavedCampaign {
-  id: string;
-  title: string;
-  productName: string;
-  createdAt: number;
-  concepts: AdConcept[];
-  inputType: InputType;
-  tone: ToneType;
-  language: LanguageType;
+// 1. Unique Ad Concept
+export interface UniqueAdConcept {
+  idea: {
+    title: string;
+    concept: string;
+    uniqueAngle: string;
+  };
+  customerAvatar: {
+    avatarName: string;
+    targetAgeAndType: string;
+    psychology: string; // Desire, fears, daily struggles
+    buyingTrigger: string;
+  };
+  painsGenerator: {
+    corePain: string;
+    hiddenFrustrations: string[];
+    emotionalCost: string; // What happens if they don't buy
+  };
 }
+
+// 2. Unique Ad Script
+export interface UniqueAdScript {
+  title: string;
+  durationSeconds: number;
+  hook: {
+    hookText: string;
+    hookStyle: string;
+    deliveryTip: string;
+  };
+  painPoint: {
+    painPointDialogue: string;
+    emotionalTrigger: string;
+  };
+  solution: {
+    solutionDialogue: string;
+    transformation: string;
+    callToAction: string;
+  };
+  fullFormattedScript: string;
+}
+
+// 3. Unique Ad Caption
+export interface UniqueAdCaption {
+  title: string; // Powerful caption title/headline
+  painPoint: string; // Story or problem breakdown
+  brandwiseSolution: {
+    solutionText: string;
+    offerAndGuarantee: string;
+    callToAction: string;
+  };
+  fullCaptionFormatted: string;
+  hashtags: string[];
+}
+
+// 4. Unique Ad Copy (Image Ad)
+export interface UniqueAdCopy {
+  imageContent: {
+    badgeText?: string;
+    headline: string;
+    subHeadline: string;
+    bulletPoints: string[];
+    callToActionText: string;
+  };
+  imagePrompt: {
+    aiPrompt: string; // For Midjourney / Gemini / AI image generator
+    designerNote: string; // Color palette, model, layout for human graphic designer
+  };
+}
+
+export interface AdConceptData {
+  languageDetected: "bn" | "en" | string;
+  productSummary: ProductSummary;
+  uniqueAdConcept: UniqueAdConcept;
+  uniqueAdScript: UniqueAdScript;
+  uniqueAdCaption: UniqueAdCaption;
+  uniqueAdCopy: UniqueAdCopy;
+}
+
+export type AngleStyleOption =
+  | "curiosity"
+  | "transformation"
+  | "contrarian"
+  | "story"
+  | "pain-agitate"
+  | "direct-offer";
+
+export type ToneOption =
+  | "natural"
+  | "energetic"
+  | "authoritative"
+  | "emotional"
+  | "humorous"
+  | "urgent";
